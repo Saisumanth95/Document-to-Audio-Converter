@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "456876101381",
+    "project_id": "document-to-audio-conver-17885",
+    "storage_bucket": "document-to-audio-conver-17885.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456876101381:android:484781ba3090f4890d316c",
+        "android_client_info": {
+          "package_name": "com.saisumanth.documenttoaudioconverter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456876101381-f7ngtoqg2hqht18jdlq3f4dtja7q14ki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saisumanth.documenttoaudioconverter",
+            "certificate_hash": "06ce5abb2c39df56edecea22cdc9ae0b287a6593"
+          }
+        },
+        {
+          "client_id": "456876101381-q08ivr0mvpt14slaras7acm8ecb3pf7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmw_6NoT5dOukGPYp8kiqv_1AxpbR8J_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456876101381-q08ivr0mvpt14slaras7acm8ecb3pf7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
