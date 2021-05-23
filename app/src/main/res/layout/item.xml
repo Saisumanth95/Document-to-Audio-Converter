@@ -12,7 +12,7 @@
     app:cardElevation="@dimen/cardview_default_elevation"
     app:cardCornerRadius="8dp"
     android:background="?attr/selectableItemBackground"
-    app:cardBackgroundColor="#B3FF9800">
+    app:cardBackgroundColor="#ffe66d">
     
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                 android:text="Title"
                 android:textSize="30dp"
                 android:layout_gravity="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:paddingLeft="5dp" />
 
         </LinearLayout>
@@ -47,7 +47,7 @@
             android:id="@+id/item_created"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             android:layout_marginLeft="1dp"
             android:layout_below="@+id/item_linear"
             android:text="25/10/2020"

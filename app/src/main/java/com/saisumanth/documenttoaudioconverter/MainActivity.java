@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfRenderer;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,9 +55,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private final int PDF_SELECT = 1;
+    private final int PHOTO_SELECT = 2;
 
     public Uri pdfUri;
-    Button selectPDF;
+    public Uri photoUri;
+    ImageButton selectPDF,selectPhoto;
+    public Bitmap photo;
     Button convertToText;
     public static ProgressDialog progressDialog;
 
@@ -65,11 +70,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         selectPDF = findViewById(R.id.selectpdf);
+        selectPhoto = findViewById(R.id.selectphoto);
         convertToText = findViewById(R.id.convert_to_text);
         progressDialog = new ProgressDialog(MainActivity.this);
         pdfUri = null;
         progressDialog.setMessage("Converting...");
         progressDialog.setCanceledOnTouchOutside(false);
+
+        convertToText.setEnabled(false);
+
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(isPermissionRequested(MainActivity.this)){
+
+                    Intent photoPick = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    startActivityForResult(photoPick,PHOTO_SELECT);
+
+                }
+
+
+            }
+        });
 
 
 
@@ -100,20 +124,24 @@ public class MainActivity extends AppCompatActivity {
 
                 progressDialog.show();
 
-
-                if(pdfUri == null){
-
-                    Toast.makeText(getApplicationContext(),"Select PDF",Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-
-
-                }else{
+                if(pdfUri != null){
 
                     convertToText();
 
                     startActivity(new Intent(MainActivity.this,DisplayActivity.class));
                     finish();
 
+                }else if(photoUri != null){
+
+                    convertBitmapToText(photo);
+
+                    startActivity(new Intent(MainActivity.this,DisplayActivity.class));
+                    finish();
+
+                }else{
+
+                    Toast.makeText(getApplicationContext(),"Select PDF or Image",Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
 
                 }
 
@@ -148,11 +176,29 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode==PDF_SELECT && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             pdfUri = data.getData();
-            selectPDF.setText("PDF Selected");
+            //selectPDF.setImageResource(R.drawable.pdfselected);
+            selectPDF.setBackground(getDrawable(R.drawable.pdfselected));
+            convertToText.setEnabled(true);
+            selectPhoto.setEnabled(false);
             //Toast.makeText(getApplicationContext(),pdfUri.toString(),Toast.LENGTH_SHORT).show();
 
+        }else if(requestCode==PHOTO_SELECT && resultCode==RESULT_OK && data!=null && data.getData()!=null){
+
+            photoUri = data.getData();
+
+            selectPhoto.setBackground(getDrawable(R.drawable.photo_selected));
+
+            try {
+                photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            convertToText.setEnabled(true);
+            selectPDF.setEnabled(false);
+
         }else{
-            Toast.makeText(getApplicationContext(),"Error in selecting pdf",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Error in selecting pdf or Image",Toast.LENGTH_LONG).show();
         }
 
     }
@@ -171,11 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(Text visionText) {
                                 // Task completed successfully
 
-                                for(Text.TextBlock text : visionText.getTextBlocks()){
-
-                                    DisplayActivity.multitext.append(text.getText() + " ");
-
-                                }
+                                DisplayActivity.multitext.append(visionText.getText() + "\n");
 
                             }
                         })

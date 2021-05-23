@@ -1,15 +1,25 @@
 package com.saisumanth.documenttoaudioconverter;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSeekBar;
+
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -21,9 +31,11 @@ import java.util.Locale;
 
 public class TextActivity extends AppCompatActivity {
 
-    public TextView textview;
+    public TextView textview,title;
 
-    public Button button,editFileButton;
+    public Button editFileButton;
+
+    FloatingActionButton button;
 
     public boolean speechtype;
 
@@ -36,8 +48,18 @@ public class TextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
+        getSupportActionBar().hide();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.black));
+        }
 
         textview = findViewById(R.id.pdf_text);
+
+        title = findViewById(R.id.text_title);
 
         button = findViewById(R.id.play);
 
@@ -52,6 +74,8 @@ public class TextActivity extends AppCompatActivity {
         final Intent intent = getIntent();
 
         int pos = intent.getIntExtra("position",0);
+
+        title.setText(FilesActivity.items.get(pos).getFilename());
 
         engine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -123,12 +147,12 @@ public class TextActivity extends AppCompatActivity {
 
                if(!speechtype){
                    speak();
-                   button.setText("STOP");
+                   button.setImageResource(R.drawable.ic_baseline_stop_24);
                    speechtype = true;
                }else{
 
                    engine.stop();
-                   button.setText("PLAY");
+                   button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
                    speechtype = false;
                }
 

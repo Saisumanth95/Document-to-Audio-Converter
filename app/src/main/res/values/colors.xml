@@ -8,4 +8,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F4511E</color>
+    <color name="primary_yellow">#ff9f1c</color>
+    <color name ="primary_orange">#ffbf69</color>
+    <color name ="primary_red">#dc2f02</color>
+    <color name ="primary_grey">#aaaaaa</color>
+
+    <color name="colorPrimary">	#FF0000</color>
+    <color name="colorPrimaryDark">	#800000	</color>
+    <color name="colorAccent">#1e344b</color>
+    <color name="grey">#3A3A3A</color>
+
+    <color name="colorBackground">#f9f9fa</color>
+    <color name="colorTextSubtitle">#4e4e4e</color>
+    <color name="colorTextTitle">#262626</color>
 </resources>
