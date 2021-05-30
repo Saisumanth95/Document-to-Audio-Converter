@@ -41,6 +41,7 @@ public class DisplayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_DocumentToAudioConverter);
         setContentView(R.layout.activity_display);
 
         multitext = findViewById(R.id.file_content);

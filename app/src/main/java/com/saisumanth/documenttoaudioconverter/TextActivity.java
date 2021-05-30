@@ -14,8 +14,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+import android.widget.Toolbar;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +30,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 
 public class TextActivity extends AppCompatActivity {
@@ -43,10 +50,13 @@ public class TextActivity extends AppCompatActivity {
 
     public SeekBar mSeekBarPitch, mSeekBarSpeed;
 
+    public Switch voiceSwitch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_DocumentToAudioConverter);
         setContentView(R.layout.activity_text);
         getSupportActionBar().hide();
 
@@ -66,6 +76,7 @@ public class TextActivity extends AppCompatActivity {
         mSeekBarPitch = findViewById(R.id.seek_bar_pitch_text);
         mSeekBarSpeed = findViewById(R.id.seek_bar_speed_text);
         editFileButton = findViewById(R.id.edit_file);
+        voiceSwitch = findViewById(R.id.voice_switch);
 
         button.setEnabled(false);
 
@@ -77,14 +88,25 @@ public class TextActivity extends AppCompatActivity {
 
         title.setText(FilesActivity.items.get(pos).getFilename());
 
+        Set<String> a = new HashSet<>();
+        a.add("male");
+        a.add("female");
+
+        Voice male = new Voice("en-in-x-ene-local",new Locale("en","IN"),400,200,false,a);
+
+        Voice female = new Voice("en-IN-language",new Locale("en","IN"),400,200,false,a);
+
+
         engine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
 
                 if(status == TextToSpeech.SUCCESS){
 
-                    int result = engine.setLanguage(Locale.US);
-                    
+                    int result = engine.setLanguage(Locale.getDefault());
+
+                    engine.setVoice(female);
+
                     if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
 
                         Log.e("TTS", "Language not supported");
@@ -104,6 +126,23 @@ public class TextActivity extends AppCompatActivity {
             }
         });
 
+        voiceSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(voiceSwitch.isChecked()){
+
+                    engine.setVoice(male);
+
+                }else {
+
+                    engine.setVoice(female);
+
+                }
+
+
+            }
+        });
 
         new Thread(new Runnable(){
 
@@ -148,11 +187,17 @@ public class TextActivity extends AppCompatActivity {
                if(!speechtype){
                    speak();
                    button.setImageResource(R.drawable.ic_baseline_stop_24);
+                   voiceSwitch.setEnabled(false);
+                   mSeekBarPitch.setEnabled(false);
+                   mSeekBarSpeed.setEnabled(false);
                    speechtype = true;
                }else{
 
                    engine.stop();
                    button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                   voiceSwitch.setEnabled(true);
+                   mSeekBarPitch.setEnabled(true);
+                   mSeekBarSpeed.setEnabled(true);
                    speechtype = false;
                }
 

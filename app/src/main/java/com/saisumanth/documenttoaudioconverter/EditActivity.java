@@ -49,6 +49,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_DocumentToAudioConverter);
         setContentView(R.layout.activity_edit);
 
         fileContent = findViewById(R.id.edit_file_content);

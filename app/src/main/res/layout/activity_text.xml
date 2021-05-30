@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:fitsSystemWindows="true"
         android:theme="@style/MyAppBarLayoutTheme"
         android:background="@color/colorPrimary">
@@ -64,6 +64,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:progress="50" />
+
+                <Switch
+                    android:id="@+id/voice_switch"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Male voice"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:background="@drawable/shape"
+                    android:backgroundTint="@color/teal_700"/>
 
 
 

@@ -18,4 +18,12 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+
+        <item name="android:statusBarColor">@color/primary_yellow</item>
+
+    </style>
+
 </resources>
