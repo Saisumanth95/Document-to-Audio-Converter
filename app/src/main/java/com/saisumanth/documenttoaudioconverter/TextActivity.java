@@ -1,9 +1,6 @@
 package com.saisumanth.documenttoaudioconverter;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSeekBar;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,24 +11,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.Toolbar;
-
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -42,7 +31,7 @@ public class TextActivity extends AppCompatActivity {
 
     public Button editFileButton;
 
-    FloatingActionButton button;
+    public FloatingActionButton button;
 
     public boolean speechtype;
 
@@ -92,7 +81,7 @@ public class TextActivity extends AppCompatActivity {
         a.add("male");
         a.add("female");
 
-        Voice male = new Voice("en-in-x-ene-local",new Locale("en","IN"),400,200,false,a);
+        Voice male = new Voice("en-in-x-end-local",new Locale("en","IN"),400,200,false,a);
 
         Voice female = new Voice("en-IN-language",new Locale("en","IN"),400,200,false,a);
 
@@ -257,13 +246,13 @@ public class TextActivity extends AppCompatActivity {
             } catch (Exception e) {
                 temp = testStri.substring(pos, testStri.length());
                 engine.speak(temp, TextToSpeech.QUEUE_ADD, null);
+                engine.speak(".End of the Document",TextToSpeech.QUEUE_ADD,null);
                 Log.d("This is test", "speech: " + e.getMessage());
                 break;
 
             }
 
         }
-
 
     }
 

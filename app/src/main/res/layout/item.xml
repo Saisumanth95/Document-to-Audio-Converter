@@ -4,15 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginLeft="18dp"
-    android:layout_marginRight="18dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:clickable="true"
     app:cardElevation="@dimen/cardview_default_elevation"
     app:cardCornerRadius="8dp"
     android:background="?attr/selectableItemBackground"
-    app:cardBackgroundColor="#ffe66d">
+    app:cardBackgroundColor="#BFFFEB3B">
     
     <RelativeLayout
         android:layout_width="wrap_content"

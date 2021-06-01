@@ -2,6 +2,7 @@ package com.saisumanth.documenttoaudioconverter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -149,8 +150,9 @@ public class DisplayActivity extends AppCompatActivity {
 
                                             progressDialog.dismiss();
 
-                                            startActivity(new Intent(DisplayActivity.this,FilesActivity.class));
-                                            finish();
+                                            Intent intent = new Intent(DisplayActivity.this, FilesActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
 
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {

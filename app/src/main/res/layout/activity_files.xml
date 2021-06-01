@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:srcCompat="@drawable/plus"
+        app:srcCompat="@drawable/ic_baseline_document_scanner_24"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="30dp"
@@ -46,8 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center"
+        android:padding="2dp"
         android:textSize="50dp"
-        android:text="No Documents found!" />
+        android:text="Add Documents to listen!" />
 
 
 </RelativeLayout>

@@ -193,8 +193,9 @@ public class EditActivity extends AppCompatActivity {
 
                                             progressDialog.dismiss();
 
-                                            startActivity(new Intent(EditActivity.this,FilesActivity.class));
-                                            finish();
+                                            Intent intent = new Intent(EditActivity.this, FilesActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
 
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
