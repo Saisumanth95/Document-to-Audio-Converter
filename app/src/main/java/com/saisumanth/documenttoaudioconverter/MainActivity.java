@@ -22,6 +22,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public Bitmap photo;
     Button convertToText;
     public static ProgressDialog progressDialog;
+    public boolean flag = true;
+    public static String convertedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         convertToText.setEnabled(false);
+
+        convertedText = "";
 
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +135,20 @@ public class MainActivity extends AppCompatActivity {
 
                     convertToText();
 
-                    startActivity(new Intent(MainActivity.this,DisplayActivity.class));
-                    finish();
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if(flag){
+
+                                startActivity(new Intent(MainActivity.this,DisplayActivity.class));
+                                finish();
+
+                            }
+
+                        }
+                    }, 8000);
 
                 }else if(photoUri != null){
 
@@ -177,11 +195,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode==PDF_SELECT && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             pdfUri = data.getData();
-            //selectPDF.setImageResource(R.drawable.pdfselected);
             selectPDF.setBackground(getDrawable(R.drawable.pdfselected));
             convertToText.setEnabled(true);
             selectPhoto.setEnabled(false);
-            //Toast.makeText(getApplicationContext(),pdfUri.toString(),Toast.LENGTH_SHORT).show();
 
         }else if(requestCode==PHOTO_SELECT && resultCode==RESULT_OK && data!=null && data.getData()!=null){
 
@@ -216,9 +232,8 @@ public class MainActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Text>() {
                             @Override
                             public void onSuccess(Text visionText) {
-                                // Task completed successfully
 
-                                DisplayActivity.multitext.append(visionText.getText() + "\n");
+                                convertedText += visionText.getText() + "\n";
 
                             }
                         })
@@ -226,8 +241,6 @@ public class MainActivity extends AppCompatActivity {
                                 new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        // Task failed with an exception
-                                        // ...
 
                                         Toast.makeText(getApplicationContext(),"Failed " + e.getMessage(),Toast.LENGTH_LONG).show();
 
@@ -243,6 +256,15 @@ public class MainActivity extends AppCompatActivity {
 
             Bitmap bitmap;
             final int pageCount = renderer.getPageCount();
+
+            if(pageCount > 60){
+                Toast.makeText(getApplicationContext(),"Select Document less than 60 pages",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,FilesActivity.class));
+                finish();
+                flag = false;
+                return;
+            }
+
             for (int i = 0; i < pageCount; i++) {
 
                 PdfRenderer.Page page = renderer.openPage(i);

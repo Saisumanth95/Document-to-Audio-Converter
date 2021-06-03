@@ -35,7 +35,7 @@ import java.util.UUID;
 public class DisplayActivity extends AppCompatActivity {
 
 
-    public static EditText multitext;
+    public EditText multitext;
 
     public static ProgressDialog progressDialog;
 
@@ -54,6 +54,8 @@ public class DisplayActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(DisplayActivity.this);
 
         MainActivity.progressDialog.dismiss();
+
+        multitext.setText(MainActivity.convertedText);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
