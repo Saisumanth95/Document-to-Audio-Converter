@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
     Button convertToText;
     public static ProgressDialog progressDialog;
     public boolean flag = true;
-    public static String convertedText;
+    public static ObserveString observeString;
+    public String convertedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         convertToText.setEnabled(false);
-
+        observeString = new ObserveString();
         convertedText = "";
 
         selectPhoto.setOnClickListener(new View.OnClickListener() {
@@ -131,38 +133,41 @@ public class MainActivity extends AppCompatActivity {
 
                 progressDialog.show();
 
-                if(pdfUri != null){
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    convertToText();
+                        if(pdfUri != null){
 
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                            convertToText();
 
                             if(flag){
 
                                 startActivity(new Intent(MainActivity.this,DisplayActivity.class));
                                 finish();
 
+                            }else {
+                                progressDialog.dismiss();
                             }
 
+                        }else if(photoUri != null){
+
+                            convertBitmapToText(photo);
+
+                            startActivity(new Intent(MainActivity.this,DisplayActivity.class));
+                            finish();
+
+                        }else{
+
+                            Toast.makeText(getApplicationContext(),"Select PDF or Image",Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+
                         }
-                    }, 8000);
 
-                }else if(photoUri != null){
 
-                    convertBitmapToText(photo);
-
-                    startActivity(new Intent(MainActivity.this,DisplayActivity.class));
-                    finish();
-
-                }else{
-
-                    Toast.makeText(getApplicationContext(),"Select PDF or Image",Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-
-                }
+                    }
+                }, 100);
 
 
             }
@@ -233,7 +238,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Text visionText) {
 
-                                convertedText += visionText.getText() + "\n";
+                                convertedText = visionText.getText() + "\n";
+                                observeString.set(convertedText);
 
                             }
                         })
@@ -257,8 +263,8 @@ public class MainActivity extends AppCompatActivity {
             Bitmap bitmap;
             final int pageCount = renderer.getPageCount();
 
-            if(pageCount > 60){
-                Toast.makeText(getApplicationContext(),"Select Document less than 60 pages",Toast.LENGTH_LONG).show();
+            if(pageCount > 100){
+                Toast.makeText(getApplicationContext(),"Select Document less than 100 pages",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(MainActivity.this,FilesActivity.class));
                 finish();
                 flag = false;

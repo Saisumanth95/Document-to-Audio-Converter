@@ -55,7 +55,13 @@ public class DisplayActivity extends AppCompatActivity {
 
         MainActivity.progressDialog.dismiss();
 
-        multitext.setText(MainActivity.convertedText);
+        MainActivity.observeString.setOnStringChangeListener(new OnStringChangeListener() {
+            @Override
+            public void onStringChanged(String newValue) {
+                multitext.append(newValue);
+            }
+        });
+
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
