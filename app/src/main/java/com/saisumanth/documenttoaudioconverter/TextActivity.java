@@ -220,7 +220,7 @@ public class TextActivity extends AppCompatActivity {
 
         int position = 0;
 
-        int speechLength =  3000;
+        int speechLength = TextToSpeech.getMaxSpeechInputLength()-1;
 
         int sizeOfChar = charSequence.length();
         String testStri = charSequence.substring(position, sizeOfChar);
@@ -236,9 +236,9 @@ public class TextActivity extends AppCompatActivity {
                 temp = testStri.substring(pos, next);
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, temp);
-                Log.d("tts", "speech: 1");
+                //Log.d("tts", "speech: 1");
                 engine.speak(temp, TextToSpeech.QUEUE_ADD, params);
-                Log.d("tts", "speech: 2");
+                //Log.d("tts", "speech: 2");
 
                 pos = pos + speechLength;
                 next = next + speechLength;
@@ -253,7 +253,6 @@ public class TextActivity extends AppCompatActivity {
             }
 
         }
-
     }
 
     private void speak() {
@@ -274,4 +273,5 @@ public class TextActivity extends AppCompatActivity {
         engine.shutdown();
 
     }
+
 }
